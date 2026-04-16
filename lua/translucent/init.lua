@@ -14,8 +14,10 @@ M.GRAY    = 8
 
 local defaults = {
   variant         = "bright",
-  types           = M.BLUE,
-  funcs           = M.CYAN,
+  use_bold        = true,
+  use_italic      = true,
+  types           = M.MAGENTA,
+  funcs           = M.BLUE,
   values          = M.GREEN,
   comments        = M.YELLOW,
   punctuation     = M.GRAY,
@@ -54,7 +56,7 @@ local hl = vim.api.nvim_set_hl
   local cleared = {
     "Keyword", "Conditional", "Repeat", "Exception",
     "Statement", "Operator", "PreProc", "Include",
-    "Define", "Macro", "StorageClass", "Special", "Tag",
+    "Define", "Macro", "StorageClass", "Special", "Tag", "Identifier",
   }
   for _, group in ipairs(cleared) do
     hl(0, group, {})
@@ -76,36 +78,42 @@ hl(0, "LspReferenceRead",  { ctermbg = resolve(config.highlight) })
 hl(0, "LspReferenceWrite", { ctermbg = resolve(config.highlight) })
 
   -- Values
-  hl(0, "Number",        { ctermfg = resolve(config.values) })
-  hl(0, "Float",         { ctermfg = resolve(config.values) })
-  hl(0, "@number",       { ctermfg = resolve(config.values) })
-  hl(0, "@number.float", { ctermfg = resolve(config.values) })
-  hl(0, "String",        { ctermfg = resolve(config.values) })
-  hl(0, "Character",     { ctermfg = resolve(config.values) })
-  hl(0, "@string",       { ctermfg = resolve(config.values) })
-  hl(0, "@string.escape",{ ctermfg = resolve(config.values) })
-  hl(0, "@character",    { ctermfg = resolve(config.values) })
+  hl(0, "Number",        { ctermfg = resolve(config.values), italic = config.use_italic })
+  hl(0, "Float",         { ctermfg = resolve(config.values), italic = config.use_italic })
+  hl(0, "@number",       { ctermfg = resolve(config.values), italic = config.use_italic  })
+  hl(0, "@number.float", { ctermfg = resolve(config.values), italic = config.use_italic  })
+  hl(0, "String",        { ctermfg = resolve(config.values), italic = config.use_italic  })
+  hl(0, "Character",     { ctermfg = resolve(config.values), italic = config.use_italic  })
+  hl(0, "@string",       { ctermfg = resolve(config.values), italic = config.use_italic  })
+  hl(0, "@string.escape",{ ctermfg = resolve(config.values), italic = config.use_italic  })
+  hl(0, "@character",    { ctermfg = resolve(config.values), italic = config.use_italic  })
 
-  hl(0, "Type",                    { ctermfg = resolve(config.types) })
-  hl(0, "@type",                   { ctermfg = resolve(config.types) })
-  hl(0, "@type.builtin",           { ctermfg = resolve(config.types) })
-  hl(0, "@type.qualifier",         { ctermfg = resolve(config.types) })
-  hl(0, "@lsp.type.type",          { ctermfg = resolve(config.types) })
-  hl(0, "@lsp.type.typeParameter", { ctermfg = resolve(config.types) })
+--  hl(0, "Type",                    { ctermfg = resolve(config.types) })
+--  hl(0, "@type",                   { ctermfg = resolve(config.types)  })
+--  hl(0, "@type.builtin",           { ctermfg = resolve(config.types)  })
+--  hl(0, "@type.qualifier",         { ctermfg = resolve(config.types) })
+--  hl(0, "@lsp.type.type",          { ctermfg = resolve(config.types) })
+--  hl(0, "@lsp.type.typeParameter", { ctermfg = resolve(config.types) })
+--  hl(0, "@lsp.type.class",        { ctermfg = resolve(config.types) })
+--  hl(0, "@lsp.type.interface",    { ctermfg = resolve(config.types) })
+--  hl(0, "@lsp.type.enum",         { ctermfg = resolve(config.types) })
 
-  hl(0, "Function",               { ctermfg = resolve(config.funcs) })
-  hl(0, "@function",              { ctermfg = resolve(config.funcs) })
-  hl(0, "@function.method",       { ctermfg = resolve(config.funcs) })
+
+  hl(0, "@lsp.mod.declaration",       { ctermfg = resolve(config.types) })
+  hl(0, "@lsp.typemod.declaration",  { ctermfg = resolve(config.types) })
+  hl(0, "@lsp.typemod.parameter.declaration",  { ctermfg = resolve(config.types) })
+  hl(0, "@lsp.typemod.variable.declaration.cs",  { ctermfg = resolve(config.types) })
+
+  hl(0, "Function",               { ctermfg = resolve(config.funcs), bold = config.use_bold })
+  hl(0, "@function",              { ctermfg = resolve(config.funcs), bold = config.use_bold })
+  hl(0, "@function.method",       { ctermfg = resolve(config.funcs), bold = config.use_bold })
   --hl(0, "@constructor",           { ctermfg = resolve(config.funcs) })
-  hl(0, "@lsp.type.class",        { ctermfg = resolve(config.funcs) })
-  hl(0, "@lsp.type.interface",    { ctermfg = resolve(config.funcs) })
-  hl(0, "@lsp.type.enum",         { ctermfg = resolve(config.funcs) })
 
   -- Comments
-  hl(0, "Comment",        { ctermfg = resolve(config.comments) })
-  hl(0, "@comment",       { ctermfg = resolve(config.comments) })
-  hl(0, "@comment.line",  { ctermfg = resolve(config.comments) })
-  hl(0, "@comment.block", { ctermfg = resolve(config.comment_blocks) })
+  hl(0, "Comment",        { ctermfg = resolve(config.comments), italic = config.use_italic })
+  hl(0, "@comment",       { ctermfg = resolve(config.comments),  italic = config.use_italic })
+  hl(0, "@comment.line",  { ctermfg = resolve(config.comments), italic = config.use_italic })
+  hl(0, "@comment.block", { ctermfg = resolve(config.comment_blocks), italic = config.use_italic })
 
   -- Diagnostics: red reserved for errors only
   hl(0, "DiagnosticError", { ctermfg = resolve(config.errors) })
@@ -118,7 +126,7 @@ hl(0, "LspReferenceWrite", { ctermbg = resolve(config.highlight) })
 hl(0, "@markup.strong",    { bold = true })
 hl(0, "@markup.italic",    { italic = true })
 hl(0, "@markup.link",      { ctermfg = resolve(config.values) })
-hl(0, "@markup.raw",       { ctermfg = resolve(config.comments) })
+--hl(0, "@markup.raw",       { ctermfg = resolve(config.comments) })
 hl(0, "@markup.list",      { ctermfg = resolve(config.punctuation) })
 end
 

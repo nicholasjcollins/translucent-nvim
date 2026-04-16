@@ -68,3 +68,7 @@ t.setup({
 - Neovim 0.8+
 - `termguicolors` must be **off** (Translucent sets this automatically)
 - Treesitter parsers for your languages (recommended, not required)
+
+```sql
+SELECT * FROM TABLE WHERE FIELD = 'name';
+```
